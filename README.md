@@ -53,6 +53,34 @@ background (about 500 MB of memory at one velocity; 1.3 GB if every layer is use
 The launcher entry (`share/applications/piano.desktop`) is in `~/.nix-profile/share`; if
 your launcher doesn't look there, symlink it into `~/.local/share/applications`.
 
+## macOS
+
+**Not supported yet.** It's built and tested on Linux only, and three parts are
+Linux-specific:
+
+- **Sound output** (`src/audio.rs`) is a PipeWire stream. macOS needs a CoreAudio output
+  instead, e.g. through the [cpal](https://crates.io/crates/cpal) crate. The engine itself is
+  portable: `Engine::render_with` fills any buffer it's handed, so the new output only has to
+  call it from cpal's callback, drain the same `rtrb` queue and keep the "start on the first
+  key" behaviour. `pipewire` would then be a Linux-only dependency
+  (`[target.'cfg(target_os = "linux")'.dependencies]`).
+- **The window toolkit** is built with gpui's Wayland backend only (`default-features =
+  false, features = ["wayland"]`). On macOS gpui uses Metal; its build compiles the shaders
+  with `xcrun metal`, which needs the full Xcode, or enable gpui's `runtime_shaders` feature
+  to compile them at startup instead. gpui needs the `font-kit` feature there.
+- **The Nix flake** patches Vulkan and Wayland into the binary's rpath, points at Mesa's
+  Vulkan drivers, and links PipeWire; all of that would have to be Linux-only
+  (`lib.optionals stdenv.isLinux`), and the launcher entry is a Linux `.desktop` file.
+
+Once those are done, running it on a Mac would be: install Rust (and Xcode, unless
+`runtime_shaders`), download the sample zip (the URL is in `flake.nix`), and run
+`PIANO_SAMPLES=/path/to/AccurateSalamanderGrandPianoV6.2a_48khz24bit_flac.zip cargo run
+--release`. The key mapping should carry over, but check the Ø Æ labels: they're chosen
+when the layout's name contains "Norwegian" (`keys::is_nordic`), and what gpui reports as
+the layout name on macOS is untested. Once it builds, the offline renderer
+(`piano render`) and `cargo test` exercise the engine without the window or audio, so
+they're the first things to run there.
+
 ## Keys
 
 | Key | |
