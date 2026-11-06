@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Piano
+GenericName=Piano
+Comment=Play a sampled grand piano on the computer keyboard
+Exec=@piano@
+Icon=piano
+Terminal=false
+Categories=AudioVideo;Audio;Music;
+Keywords=piano;keyboard;music;
+StartupWMClass=piano

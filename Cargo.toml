@@ -1,0 +1,22 @@
+[package]
+name = "piano"
+version = "0.1.0"
+edition = "2021"
+description = "A sampled grand piano played on the computer keyboard"
+
+[dependencies]
+anyhow = "1"
+claxon = "0.4"          # FLAC decoding, 24-bit
+gpui = { version = "0.2", default-features = false, features = ["wayland"] }
+pipewire = { version = "0.10", features = ["v0_3_49"] }  # Buffer::requested, for low-latency playback
+realfft = "3"           # pitch measurement in the report
+rtrb = "0.3"            # lock-free UI → audio event queue
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+zip = { version = "2", default-features = false, features = ["deflate"] }
+
+[profile.release]
+lto = "thin"
+
+[profile.test]
+opt-level = 3
