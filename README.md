@@ -98,7 +98,7 @@ Velocity, octave and reverb are kept in `~/.local/state/piano/settings.json`.
 
 ## Credits and licence
 
-The piano samples are licensed under
+The code is under the MIT licence (`LICENSE`). The piano samples are licensed under
 [Creative Commons Attribution 3.0](http://creativecommons.org/licenses/by/3.0/):
 
 - **Salamander Grand Piano V3** by Alexander Holm (Yamaha C5),

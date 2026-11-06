@@ -62,6 +62,7 @@
             install -Dm644 packaging/piano.svg $out/share/icons/hicolor/scalable/apps/piano.svg
           '';
           meta.mainProgram = "piano";
+          meta.license = lib.licenses.mit;
         };
       in
       {
